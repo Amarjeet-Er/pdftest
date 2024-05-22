@@ -6,8 +6,6 @@ import * as XLSX from 'xlsx';
 import { Directory } from '@capacitor/filesystem';
 import write_blob from 'capacitor-blob-writer';
 
-
-
 @Component({
   selector: 'app-registration',
   templateUrl: './registration.component.html',
@@ -15,29 +13,25 @@ import write_blob from 'capacitor-blob-writer';
 })
 export class RegistrationComponent implements OnInit {
   reg_data: any;
-
- EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet; charset=UTF-8';
+  EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet; charset=UTF-8';
+  
   constructor(
     private http: HttpClient,
     private _Platform: Platform
-  ) {
-
-  }
+  ) {}
 
   ngOnInit(): void {
-
     this.http.get('https://turningbrain.co.in/api/registrationListApi').subscribe(
       (res: any) => {
         console.log("res hai ", res);
         this.reg_data = res;
       }
-    )
-
+    );
   }
 
   // Generate Excel file
   excel() {
-    alert("excel")
+    alert("Generating Excel...");
     let serialNo = 1;
     const data = this.reg_data.map((reg: any) => ({
       'Serial No.': serialNo++,
@@ -60,9 +54,9 @@ export class RegistrationComponent implements OnInit {
     }));
     try {
       this.downloadExcel(data);
-      alert("Excel download successfully");
+      alert("Excel downloaded successfully");
     } catch {
-      alert("Excel not download");
+      alert("Excel download failed");
     }
   }
 
@@ -78,26 +72,30 @@ export class RegistrationComponent implements OnInit {
       ws['!rows'] = [{ hpt: 20 }, { hpt: 20 }, { hpt: 20 }];
       ws['A1'].s = { font: { bold: true }, alignment: { horizontal: 'center' }, fill: { fgColor: { rgb: 'FFFF00' } } };
 
+      // Generate unique filename with timestamp
+      const timestamp = new Date().toISOString().replace(/[-T:\.Z]/g, '');
+      const filename = `Registration_${timestamp}.xlsx`;
+
       if (this._Platform.is('cordova') || this._Platform.is('mobile') || this._Platform.is('android')) {
         const excelBuffer = XLSX.write(wb, { type: 'array', bookType: 'xlsx' });
-  
-        const excelData:Blob = new Blob([excelBuffer],{
+
+        const excelData: Blob = new Blob([excelBuffer], {
           type: this.EXCEL_TYPE
         });
 
         write_blob({
-          path:'Registration.xlsx',
-          directory:Directory.Documents,
-          blob:excelData
-        }).then((v)=>{
-          alert("data save to documents")
-        }).catch((e)=>{
-          alert(e)
-        })
-       
+          path: filename,
+          directory: Directory.Documents,
+          blob: excelData
+        }).then((v) => {
+          alert("Data saved to documents");
+        }).catch((e) => {
+          alert(e);
+        });
+
       } else {
         // For other platforms or web environment
-        XLSX.writeFile(wb, 'report.xlsx');
+        XLSX.writeFile(wb, filename);
       }
     } catch (error) {
       alert("Data not found");
