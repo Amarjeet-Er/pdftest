@@ -1,9 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Platform } from '@ionic/angular';
-
 import * as XLSX from 'xlsx';
-import { Directory } from '@capacitor/filesystem';
+import { Directory, Filesystem } from '@capacitor/filesystem';
 import write_blob from 'capacitor-blob-writer';
 import { LocalNotifications } from '@capacitor/local-notifications';
 
@@ -15,7 +14,7 @@ import { LocalNotifications } from '@capacitor/local-notifications';
 export class RegistrationComponent implements OnInit {
   reg_data: any;
   EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet; charset=UTF-8';
-  
+
   constructor(
     private http: HttpClient,
     private _Platform: Platform
@@ -33,6 +32,11 @@ export class RegistrationComponent implements OnInit {
     if (granted.display !== 'granted') {
       console.warn('Notifications permission not granted');
     }
+
+    // Add listener for notification click
+    LocalNotifications.addListener('localNotificationActionPerformed', (notification) => {
+      this.handleNotificationClick(notification);
+    });
   }
 
   // Generate Excel file
@@ -96,7 +100,7 @@ export class RegistrationComponent implements OnInit {
           blob: excelData
         });
 
-        this.showNotification('Excel Downloaded', 'Your Excel file has been saved successfully.');
+        this.showNotification('Excel Downloaded', 'Your Excel file has been saved successfully.', { path: `${Directory.Documents}/${filename}` });
       } else {
         // For other platforms or web environment
         XLSX.writeFile(wb, filename);
@@ -107,7 +111,7 @@ export class RegistrationComponent implements OnInit {
     }
   }
 
-  async showNotification(title: string, body: string) {
+  async showNotification(title: string, body: string, extra: any = {}) {
     await LocalNotifications.schedule({
       notifications: [
         {
@@ -118,11 +122,39 @@ export class RegistrationComponent implements OnInit {
           sound: 'default', // Provide a default sound or remove this property if not needed
           attachments: [], // Provide an empty array as a default value or remove this property if not needed
           actionTypeId: '',
-          extra: null
+          extra
         }
       ]
     });
   }
-  
-  
+
+  async handleNotificationClick(notification: any) {
+    if (notification && notification.notification && notification.notification.extra && notification.notification.extra.path) {
+      const filePath = notification.notification.extra.path;
+      alert("filepath "+filePath)
+
+      try {
+        const result = await Filesystem.readdir({
+          path: "",
+          directory: Directory.Documents
+        });
+
+        alert("result "+ result)
+        const fileEntry = result.files.find(file => file.name === filePath);
+        alert("check "+fileEntry)
+        if (fileEntry) {
+          const fileResult = await Filesystem.readFile({
+            path: filePath,
+            directory: Directory.Documents
+          });
+          alert(`File content: ${fileResult.data}`);
+          // Alternatively, open the file in the appropriate app
+        } else {
+          alert('File not found');
+        }
+      } catch (e) {
+        alert('Unable to open file: ' + e);
+      }
+    }
+  }
 }
