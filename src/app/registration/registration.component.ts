@@ -5,6 +5,7 @@ import { Platform } from '@ionic/angular';
 import * as XLSX from 'xlsx';
 import { Directory } from '@capacitor/filesystem';
 import write_blob from 'capacitor-blob-writer';
+import { LocalNotifications } from '@capacitor/local-notifications';
 
 @Component({
   selector: 'app-registration',
@@ -20,13 +21,18 @@ export class RegistrationComponent implements OnInit {
     private _Platform: Platform
   ) {}
 
-  ngOnInit(): void {
+  async ngOnInit() {
     this.http.get('https://turningbrain.co.in/api/registrationListApi').subscribe(
       (res: any) => {
         console.log("res hai ", res);
         this.reg_data = res;
       }
     );
+
+    const granted = await LocalNotifications.requestPermissions();
+    if (granted.display !== 'granted') {
+      console.warn('Notifications permission not granted');
+    }
   }
 
   // Generate Excel file
@@ -61,7 +67,7 @@ export class RegistrationComponent implements OnInit {
   }
 
   // Download Excel
-  downloadExcel(data: any) {
+  async downloadExcel(data: any) {
     try {
       const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(data);
       const wb: XLSX.WorkBook = XLSX.utils.book_new();
@@ -72,8 +78,9 @@ export class RegistrationComponent implements OnInit {
       ws['!rows'] = [{ hpt: 20 }, { hpt: 20 }, { hpt: 20 }];
       ws['A1'].s = { font: { bold: true }, alignment: { horizontal: 'center' }, fill: { fgColor: { rgb: 'FFFF00' } } };
 
-      // Generate unique filename with timestamp
-      const timestamp = new Date().toISOString().replace(/[-T:\.Z]/g, '');
+      // Generate unique filename with timestamp without year
+      const now = new Date();
+      const timestamp = `${String(now.getMonth() + 1).padStart(2, '0')}${String(now.getDate()).padStart(2, '0')}${String(now.getHours()).padStart(2, '0')}${String(now.getMinutes()).padStart(2, '0')}${String(now.getSeconds()).padStart(2, '0')}`;
       const filename = `Registration_${timestamp}.xlsx`;
 
       if (this._Platform.is('cordova') || this._Platform.is('mobile') || this._Platform.is('android')) {
@@ -83,22 +90,39 @@ export class RegistrationComponent implements OnInit {
           type: this.EXCEL_TYPE
         });
 
-        write_blob({
+        await write_blob({
           path: filename,
           directory: Directory.Documents,
           blob: excelData
-        }).then((v) => {
-          alert("Data saved to documents");
-        }).catch((e) => {
-          alert(e);
         });
 
+        this.showNotification('Excel Downloaded', 'Your Excel file has been saved successfully.');
       } else {
         // For other platforms or web environment
         XLSX.writeFile(wb, filename);
+        this.showNotification('Excel Downloaded', 'Your Excel file has been saved successfully.');
       }
     } catch (error) {
       alert("Data not found");
     }
   }
+
+  async showNotification(title: string, body: string) {
+    await LocalNotifications.schedule({
+      notifications: [
+        {
+          title,
+          body,
+          id: 1,
+          schedule: { at: new Date(Date.now() + 1000) }, // Schedule to show after 1 second
+          sound: 'default', // Provide a default sound or remove this property if not needed
+          attachments: [], // Provide an empty array as a default value or remove this property if not needed
+          actionTypeId: '',
+          extra: null
+        }
+      ]
+    });
+  }
+  
+  
 }
