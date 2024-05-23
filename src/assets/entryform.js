@@ -99,4 +99,4 @@ function submit() {
 
 // Add event listeners
 document.getElementById('fileInput').addEventListener('change', handleFileSelect);
-alert("Event listener for file input change added");
+// alert("Event listener for file input change added");
