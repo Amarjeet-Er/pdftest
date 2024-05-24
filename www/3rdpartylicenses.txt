@@ -66,6 +66,12 @@ MIT
 @angular/router
 MIT
 
+@awesome-cordova-plugins/core
+MIT
+
+@awesome-cordova-plugins/file-opener
+MIT
+
 @babel/runtime
 MIT
 MIT License
