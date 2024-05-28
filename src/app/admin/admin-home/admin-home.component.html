@@ -1,0 +1,103 @@
+<mat-sidenav-container>
+    <mat-sidenav-content>
+        <div class="content">
+            <div class="toolbar">
+                <mat-toolbar>
+                    <span routerLink="dashboard" *ngIf="onDashboard()"></span>
+                    <button mat-icon-button routerLink="/admin" *ngIf="onCandidate()">
+                        <img src="../../../assets/icons/back.png" alt="back icon" width="30px">
+                    </button>
+                    <button mat-icon-button routerLink="/admin" *ngIf="onEmployee()">
+                        <img src="../../../assets/icons/back.png" alt="back icon" width="30px">
+                    </button>
+                    <button mat-icon-button routerLink="/admin/candidate" *ngIf="onRegistrationForm()">
+                        <img src="../../../assets/icons/back.png" alt="back icon" width="30px">
+                    </button>
+                    <button mat-icon-button routerLink="/admin/registrationlist" *ngIf="onRegistrationUpdate()">
+                        <img src="../../../assets/icons/back.png" alt="back icon" width="30px">
+                    </button>
+                    <button mat-icon-button routerLink="/admin/candidate" *ngIf="onRegistrationList()">
+                        <img src="../../../assets/icons/back.png" alt="back icon" width="30px">
+                    </button>
+                    <button mat-icon-button routerLink="dashboard" *ngIf="onProfile()">
+                        <img src="../../../assets/icons/back.png" alt="back icon" width="30px">
+                    </button>
+                    <button mat-icon-button routerLink="/admin/candidate" *ngIf="onReports()">
+                        <img src="../../../assets/icons/back.png" alt="back icon" width="30px">
+                    </button>
+                    <button mat-icon-button routerLink="/admin/reportslist" *ngIf="onDesignation()">
+                        <img src="../../../assets/icons/back.png" alt="back icon" width="30px">
+                    </button>
+                    <button mat-icon-button routerLink="/admin/reportslist" *ngIf="onDepartment()">
+                        <img src="../../../assets/icons/back.png" alt="back icon" width="30px">
+                    </button>
+                    <button mat-icon-button routerLink="/admin/reportslist" *ngIf="onState()">
+                        <img src="../../../assets/icons/back.png" alt="back icon" width="30px">
+                    </button>
+                    <button mat-icon-button routerLink="/admin/reportslist" *ngIf="onCity()">
+                        <img src="../../../assets/icons/back.png" alt="back icon" width="30px">
+                    </button>
+                    <button mat-icon-button routerLink="/admin/employee" *ngIf="onEmpRegistrationForm()">
+                        <img src="../../../assets/icons/back.png" alt="back icon" width="30px">
+                    </button>
+                    <button mat-icon-button routerLink="/admin/employee" *ngIf="onEmpRegistrationList()">
+                        <img src="../../../assets/icons/back.png" alt="back icon" width="30px">
+                    </button>
+                    <button mat-icon-button routerLink="/admin/empregistrationlist" *ngIf="onEmpRegistrationUpdate()">
+                        <img src="../../../assets/icons/back.png" alt="back icon" width="30px">
+                    </button>
+                    <button mat-icon-button routerLink="/admin" *ngIf="onAllCandidate()">
+                        <img src="../../../assets/icons/back.png" alt="back icon" width="30px">
+                    </button>
+
+                    <span *ngIf="onDashboard()">Dashboard</span>
+                    <span *ngIf="onCandidate()">Candidate</span>
+                    <span *ngIf="onEmployee()">Employee</span>
+                    <span *ngIf="onEmpRegistrationForm()">Employee Registration</span>
+                    <span *ngIf="onEmpRegistrationList()">Employee List</span>
+                    <span *ngIf="onEmpRegistrationUpdate()"> Employee Update</span>
+                    <span *ngIf="onRegistrationForm()">Candidate Registration</span>
+                    <span *ngIf="onRegistrationUpdate()">Candidate Update</span>
+                    <span *ngIf="onRegistrationList()">Candidate List</span>
+                    <span *ngIf="onReports()">Reports</span>
+                    <span *ngIf="onProfile()">Profile</span>
+                    <span *ngIf="onDesignation()">Designation</span>
+                    <span *ngIf="onDepartment()">Department</span>
+                    <span *ngIf="onState()">State</span>
+                    <span *ngIf="onCity()">City</span>
+                    <span *ngIf="onAllCandidate()">Total Candidate</span>
+                </mat-toolbar>
+            </div>
+
+            <div class="main">
+                <main>
+                    <router-outlet></router-outlet>
+                </main>
+            </div>
+
+            <div id="footer">
+                <mat-toolbar>
+                    <button mat-icon-button [routerLink]="['dashboard']">
+                        <img src="../../../assets/icons/home.png" alt="home icon">
+                        <mat-hint>HOME</mat-hint>
+                    </button>
+
+                    <button mat-icon-button [routerLink]="['candidate']">
+                        <img src="../../../assets/icons/candidates.png" alt="registration icon">
+                        <mat-hint>CANDIDATE</mat-hint>
+                    </button>
+
+                    <button mat-icon-button [routerLink]="['employee']">
+                        <img src="../../../assets/icons/emp.png" alt="list icon">
+                        <mat-hint>EMPLOYEE</mat-hint>
+                    </button>
+
+                    <button mat-icon-button [routerLink]="['profile']">
+                        <img src="../../../assets/icons/profile.png" alt="profile icon">
+                        <mat-hint>PROFILE</mat-hint>
+                    </button>
+                </mat-toolbar>
+            </div>
+        </div>
+    </mat-sidenav-content>
+</mat-sidenav-container>

@@ -31,7 +31,7 @@ export class RegistrationComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
-    this.http.get('https://turningbrain.co.in/api/registrationListApi').subscribe(
+    this.http.get('https://heerafacilityservices.com/api/RegistrationReportApi').subscribe(
       (res: any) => {
         this.reg_data = res;
       }

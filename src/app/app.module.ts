@@ -18,12 +18,16 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatButtonModule } from '@angular/material/button';
 import { HttpClientModule } from '@angular/common/http';
+import { LoginPageComponent } from './login-page/login-page.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
     AppComponent,
     EntryFormComponent,
-    RegistrationComponent
+    RegistrationComponent,
+    LoginPageComponent
   ],
   imports: [
     BrowserModule,
@@ -40,7 +44,9 @@ import { HttpClientModule } from '@angular/common/http';
     MatFormFieldModule,
     MatButtonToggleModule,
     MatButtonModule,
-    HttpClientModule
+    HttpClientModule,
+    MatSnackBarModule,
+    MatDialogModule
   ],
   providers: [],
   bootstrap: [AppComponent]

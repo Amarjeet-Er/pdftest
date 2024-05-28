@@ -1,0 +1,35 @@
+<div id="container">
+    <div class="wrapper">
+        <form [formGroup]="login_form">
+            <div class="imgbox">
+                <div class="avatar">
+                    <img src="../../assets/images/heeraprofile.jpeg" alt="login-profile">
+                </div>
+            </div>
+
+            <div class="input-box">
+                <img src="../../assets/icons/login-user.png" alt="username" width="30px" height="30px">
+                <input type="text" placeholder="Username" formControlName="Username">
+            </div>
+
+            <div class="input-box">
+                <img src="../../assets/icons/login-password.png" alt="password" width="30px" height="30px">
+                <input (keydown.enter)="onLogin()" type="password" [type]="hide ? 'password' : 'text'"
+                    placeholder="Password" formControlName="Password">
+                <button class="eyeBtn" mat-icon-button matSuffix (click)="hide = !hide"
+                    [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                    <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                </button>
+            </div>
+            <div class="forgot">
+                <!-- <p routerLink="forgotpassword">Forgot password?</p> -->
+            </div>
+            <button type="submit" class="btn" (click)="onLogin()">Login</button>
+        </form>
+    </div>
+</div>
+<div class="companyInfo">
+    <div class="compInfo">
+        <span>Developed By </span><img src="../../assets/images/macreelLogo.jpg" alt="macreel icon">
+    </div>
+</div>

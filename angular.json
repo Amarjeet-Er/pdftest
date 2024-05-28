@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "pdftest": {
+    "heera": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -61,10 +61,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "pdftest:build:production"
+              "browserTarget": "heera:build:production"
             },
             "development": {
-              "browserTarget": "pdftest:build:development"
+              "browserTarget": "heera:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -72,7 +72,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "pdftest:build"
+            "browserTarget": "heera:build"
           }
         },
         "test": {

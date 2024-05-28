@@ -1,0 +1,11 @@
+{
+  "appId": "com.heera.app",
+  "appName": "Heera",
+  "bundledWebRuntime": false,
+  "webDir": "dist",
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 0
+    }
+  }
+}

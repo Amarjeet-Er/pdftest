@@ -1,0 +1,121 @@
+<div id="wrapper">
+    <div class="site-header" *ngIf="headerBox">
+        <span> <b>Total :-</b> {{reg_data?.length}}</span>
+        <button class="site-search" mat-icon-button (click)="onHeaderBox()">
+            <mat-icon>search</mat-icon>
+        </button>
+    </div>
+
+    <div class="site-header site-header-search" *ngIf="siteSearch">
+        <span style="color: white; display: inherit; gap: 10px;"> <b>Total</b> {{reg_data?.length}}</span>
+        <input type="text" class="site-search-input" placeholder="Search..." #search
+            (keyup)="onListSearch(search.value)">
+        <button mat-icon-button type="reset" class="site-search site-search-reset" (click)="onSiteSearch()">
+            <mat-icon style="color: white;">close</mat-icon>
+        </button>
+    </div>
+</div>
+
+<div id="containerBox">
+    <mat-accordion class="container">
+        <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false"
+            *ngFor="let data of reg_data">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <div class="imgDataBox">
+                        <img [src]="data.Registration_image? base_url+data.Registration_image : '../../../assets/images/user.webp'"
+                            alt="">
+                    </div>
+                </mat-panel-title>
+                <mat-panel-description>
+                    <b> {{data.fullname}}</b>
+                </mat-panel-description>
+            </mat-expansion-panel-header>
+            <div class="dataRow">
+                <p>
+                    <b>Name :- </b>
+                    <span>{{data.fullname}}</span>
+                </p>
+                <p>
+                    <b>Mobile No :- </b>
+                    <span>{{data.Mobile}}</span>
+                </p>
+                <p>
+                    <b>Alt Mobile No :- </b>
+                    <span>{{data.Alternatemobile}}</span>
+                </p>
+                <p>
+                    <b>E-mail :- </b>
+                    <span>{{data.Email}}</span>
+                </p>
+                <p>
+                    <b>Experience :- </b>
+                    <span>{{data.Experience}}</span>
+                </p>
+                <p>
+                    <b>DOB :- </b>
+                    <span>{{data.dob}}</span>
+                </p>
+                <p>
+                    <b>Designation :- </b>
+                    <span>{{data.Designation_name}}</span>
+                </p>
+                <p>
+                    <b>Department :- </b>
+                    <span>{{data.Department_name}}</span>
+                </p>
+                <p>
+                    <b>SubDepartment :- </b>
+                    <span>{{data.SubDept_name}}</span>
+                </p>
+                <p>
+                    <b>State :- </b>
+                    <span>{{data.Statename}}</span>
+                </p>
+                <p>
+                    <b>City :- </b>
+                    <span>{{data.City_name}}</span>
+                </p>
+                <p>
+                    <b>Aadhar No :- </b>
+                    <span>{{data.AadharNo}}</span>
+                </p>
+                <p>
+                    <b>Pan No :- </b>
+                    <span>{{data.PanNo}}</span>
+                </p>
+                <p>
+                    <b>Document1 :- </b>
+                    <span>
+                        <div class="DocumentsImg">
+                            <img [src]="data.Document? base_url+data.Document : '../../../assets/images/documents.jpg'"
+                                alt="document">
+                        </div>
+                    </span>
+                </p>
+
+                <p>
+                    <b>Document2 :- </b>
+                    <span>
+                        <div class="DocumentsImg">
+                            <img [src]="data.Document2? base_url+data.Document2 : '../../../assets/images/documents.jpg'"
+                                alt="document">
+                        </div>
+                    </span>
+                </p>
+
+            </div>
+            <div class="ActionRow">
+                <button mat-raised-button color="primary" (click)="onRegEdit(data)">
+                    <mat-icon>edit</mat-icon>
+                    <span>Edit</span>
+                </button>
+                <button mat-raised-button color="warn" (click)="onDelete(data)">
+                    <mat-icon>delete</mat-icon>
+                    <span>Delete</span>
+                </button>
+            </div>
+        </mat-expansion-panel>
+    </mat-accordion>
+    <p class="NoRecord" *ngIf="reg_data?.length === 0">No Record Found</p>
+</div>

@@ -1,8 +1,56 @@
-/* You can add global styles to this file, and also import other style files */
-*{
-    margin: 0;
-    padding: 0;
+* {
+    margin: 0px;
+    padding: 0px;
     box-sizing: border-box;
+    font-family: Roboto;
 }
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+/* for all component requiremnt color */
+:root {
+    --color-1: #293861;
+    --color-2: #ffffff;
+    --color-3: #000000;
+    --color-4: #DD3D4F;
+    --color-5: #096509EB;
+}
+
+/* for sidebar scrollbar in all */
+::-webkit-scrollbar {
+    width: 0px;
+    height: 0px;
+}
+
+.mat-expansion-panel-body {
+    padding: 0px !important;
+}
+
+/* for all input  fields number top to button none */
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* for all requirement toas notification  */
+
+.tostSuccess {
+    color: white;
+    position: relative;
+    bottom: 50px;
+    --mdc-snackbar-container-color: var(--color-5);
+}
+
+.tostError {
+    color: white;
+    position: relative;
+    bottom: 50px;
+    --mdc-snackbar-container-color: var(--color-4);
+}
+
+.tostWarning {
+    color: white;
+    position: relative;
+    bottom: 50px;
+    --mdc-snackbar-container-color: #e86e30;
+}

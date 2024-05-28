@@ -1,0 +1,162 @@
+<div class="container">
+    <div id="wrapper">
+        <span [hidden]="onCameraOpen">
+            <div class="BoxCamera">
+                <video #video id="video" [width]="WIDTH" [height]="HEIGHT" autoplay></video>
+            </div>
+            <div class="BoxCameraClickBtn">
+                <button mat-raised-button color="primary" (click)="capture()">Click Photo</button>
+            </div>
+        </span>
+
+        <div *ngIf="onCaptureImg">
+            <div class="BoxCamera">
+                <canvas #canvas id="canvas" [hidden]="!onCameraOpen" [width]="WIDTH" [height]="HEIGHT"></canvas>
+            </div>
+        </div>
+
+        <div class="UploadImage">
+            <div class="imgDataBox" [hidden]="onGalleryImg">
+                <span>
+                    <img alt="galleryImg" [src]="gallery_img_url">
+                    <input class="d-none" type="file" accept=".jpg,.png,.jpeg," #galleryImg
+                        (change)="OnGallery(galleryImg.files)">
+                </span>
+            </div>
+        </div>
+
+        <button class="actionCamera" [matMenuTriggerFor]="menu" *ngIf="onChooseImg">
+            <span>Select Images</span>
+            <button mat-icon-button aria-label="Example icon-button with a menu">
+                <img src="../../../assets/images/camera.png" alt="change image" width="30">
+            </button>
+            <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="StartCamera()">
+                    <mat-icon>camera_enhance</mat-icon>
+                    <span>Camera</span>
+                </button>
+
+                <button mat-menu-item (click)="galleryImg.click()">
+                    <mat-icon> insert_photo</mat-icon>
+                    <span>Gallery</span>
+                </button>
+            </mat-menu>
+        </button>
+
+        <form [formGroup]="AddRegistration">
+            <mat-form-field appearance="outline">
+                <mat-label>Name</mat-label>
+                <input matInput placeholder="Enter Name" formControlName="Name">
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Surname</mat-label>
+                <input matInput placeholder="Enter Surname" formControlName="SurName">
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Mobile No</mat-label>
+                <input matInput type="number" placeholder="Enter Mobile" maxlength="10"
+                    onkeypress=" return this.value.length < 10"
+                    oninput="if(this.value.length>=10) {this.value = this.value.sclice (0,10);}"
+                    formControlName="Mobile">
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Alt Mobile No</mat-label>
+                <input matInput type="number" placeholder="Enter Alt Mobile No" maxlength="10"
+                    onkeypress=" return this.value.length < 10"
+                    oninput="if(this.value.length>=10) {this.value = this.value.sclice (0,10);}"
+                    formControlName="Alternatemobile">
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Email</mat-label>
+                <input matInput type="email" placeholder="Enter Email" formControlName="Email">
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>DOB</mat-label>
+                <input matInput type="date" placeholder="Enter Dob" formControlName="dob">
+                <mat-hint *ngIf="isUser18OrOlder()" style="color: green;">your age must be 18 or above</mat-hint>
+                <mat-hint *ngIf="!isUser18OrOlder()" style="color: red;">you are not eligible for this
+                    application</mat-hint>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Designation</mat-label>
+                <mat-select disableRipple formControlName="Designation">
+                    <mat-option *ngFor="let designation of designation_data"
+                        [value]="designation?.id">{{designation?.Designation_name}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Department</mat-label>
+                <mat-select disableRipple formControlName="Department"
+                    (valueChange)="get_filter_by_sub_department($event)">
+                    <mat-option *ngFor="let department of department_data"
+                        [value]="department?.Deptid">{{department?.Department_name}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+
+            <mat-form-field appearance="outline">
+                <mat-label>SubDepartment</mat-label>
+                <mat-select disableRipple formControlName="subDepartment">
+                    <mat-option *ngFor="let sub_separtment of subdepartment_data"
+                        [value]="sub_separtment?.Id">{{sub_separtment?.SubDept_name}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>State</mat-label>
+                <mat-select disableRipple formControlName="State" (valueChange)="get_filter_by_city($event)">
+                    <mat-option *ngFor="let state of state_data" [value]="state?.id">{{state?.Statename}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>City</mat-label>
+                <mat-select disableRipple formControlName="City">
+                    <mat-option *ngFor="let city of city_data" [value]="city?.id">{{city?.name}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Aadhar No</mat-label>
+                <input matInput type="number" placeholder="Enter Aadhar No" maxlength="16"
+                    onkeypress=" return this.value.length < 16"
+                    oninput="if(this.value.length>=16) {this.value = this.value.sclice (0,16);}"
+                    formControlName="AadharNo">
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Pan No</mat-label>
+                <input matInput type="text" placeholder="Enter Pan No" formControlName="PanNo">
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Experience </mat-label>
+                <input matInput type="text" placeholder="Enter Experience " formControlName="Experience">
+            </mat-form-field>
+
+            <div class="Documents" (click)="Aadhar.click()">
+                <span>Documents</span>
+                <img alt="documents" [src]="Aadhar_img_url">
+                <input class="d-none" type="file" accept=".jpg,.png,.jpeg," #Aadhar (change)="onAadhar(Aadhar.files)">
+            </div>
+
+            <div class="Documents" (click)="PanCard.click()">
+                <span>Documents</span>
+                <img alt="documents" [src]="PanCard_img_url">
+                <input class="d-none" type="file" accept=".jpg,.png,.jpeg," #PanCard
+                    (change)="onPanCard(PanCard.files)">
+            </div>
+
+            <div class="submit">
+                <button mat-raised-button color="primary" (click)="onSubmit()">{{onSubmitBtn}}</button>
+            </div>
+        </form>
+    </div>
+</div>
